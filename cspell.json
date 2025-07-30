@@ -1,0 +1,16 @@
+{
+  // https://cspell.org/
+  "version": "0.2",
+  "ignorePaths": [],
+  "words": [
+    "biniary",
+    "enabledelayedexpansion",
+    "findstr",
+    "mklink",
+    "propertis",
+    "setlocal",
+    "usebackq"
+  ],
+  "ignoreWords": [],
+  "import": []
+}
