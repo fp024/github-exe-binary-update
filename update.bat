@@ -55,11 +55,11 @@ echo Expected SHA256: %EXPECTED_HASH%
 
 rem Compare versions and download if different or file doesn't exist
 if "%LOCAL_VERSION%" == "%LATEST_VERSION%" (
-  echo The latest version is already installed.
+  echo 💡 The latest version is already installed.
   goto end
 )
 
-echo ★★★ Please Check Version ★★★
+echo ✨✨✨ Please Check Version ✨✨✨
 :ask_continue
 set /p userChoice="Would you like to update? (y/n): "
 if /i "!userChoice!"=="y" (
@@ -94,7 +94,25 @@ if "!ACTUAL_SIZE!" neq "%EXPECTED_SIZE%" (
     goto fail_end
 )
 
-echo File size verification passed.
+echo ✅ File size verification passed.
+
+rem Run security scan (optional - continues even if Defender unavailable)
+call security_scan.bat "%EXECUTABLE_NAME%_temp.exe"
+set SCAN_RESULT=!errorlevel!
+
+if !SCAN_RESULT! equ 2 (
+    echo 💢 CRITICAL: Potential malware detected! Update canceled for security.
+    del %EXECUTABLE_NAME%_temp.exe
+    goto fail_end
+)
+
+rem SCAN_RESULT 0 or 1 both allow continuation
+if !SCAN_RESULT! equ 0 (
+    echo ✅ Security check passed.
+) else (
+    echo ⚠️ Security scan unavailable - proceeding with caution.
+)
+
 echo Calculating SHA256 hash... (this may take a moment)
 
 rem Calculate SHA256 hash
@@ -110,17 +128,17 @@ if "!ACTUAL_HASH!" neq "%EXPECTED_HASH%" (
     goto fail_end
 )
 
-echo SHA256 verification passed. File integrity confirmed!
+echo ✅ SHA256 verification passed. File integrity confirmed!
 echo Replacing the original file...
 
 if exist %EXECUTABLE_NAME% (
     del %EXECUTABLE_NAME%
 )
 ren %EXECUTABLE_NAME%_temp.exe %EXECUTABLE_NAME%
-echo File successfully updated and verified!
+echo 🎉 File successfully updated and verified! 🎉
 
 :end
-echo Task completed.
+echo 👍 Task completed. 
 :fail_end
 echo Press Enter key to continue...
 set /p dummyVar=""
