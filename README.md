@@ -6,7 +6,7 @@
 >
 > 💡 원래는 여러가지 잡동사니 모아둔 리포지토리의 하위에 만들어놨던 프로젝트인데, 기능을 조금씩 추가하게 되어서, 별도 리포지토리로 분리했다.
 
-update.bat과 `[프로그램_이름].properties` 파일을 실행파일을 위치시킬 디렉토리에 심볼릭 링크로 배치 시켜주면 된다.
+`update.bat`, `security_scan.bat`, `[프로그램_이름].properties` 파일을 실행파일을 위치시킬 디렉토리에 심볼릭 링크로 배치 시켜주면 된다.
 
 `[프로그램_이름].properties` 파일의 심볼릭 링크 명은 settings.properties로 만든다.
 
@@ -30,6 +30,12 @@ update.bat과 `[프로그램_이름].properties` 파일을 실행파일을 위�
    * GitHub API 결과중 파일 크기(size)와 파일 해시(digest)가 일치 하는지 확인
    * 일치하지 않을경우 임시 다운로드 파일을 교체하지 않고 실패로 처리
    * 파일 검증이 성공하면 임시 파일을 실제 사용 파일로 교체함
+7. **바이러스 검사** :
+   * 6 단계의 파일 크기 검사와 파일 해시 검사 사이에, 바이러스 검사 단계가 있음
+   * WinRAR의 바이러스 검사 기능이 생각나서 추가해봄.
+     * 다음 프로그램과 인자 사용
+       * 윈도우디펜더 커맨더 라인 실행 프로그램: `C:\Program Files\Windows Defender\MpCmdRun.exe`
+       * 전달인자: `-Scan -ScanType 3 -File "%f"`
 
 ### 핵심 로직
 - **파일 없음 처리**: `LOCAL_VERSION=none`으로 설정되어, 최신 버전과 달라지므로 자연스럽게 신규 다운로드 시작
@@ -79,6 +85,9 @@ update.bat과 `[프로그램_이름].properties` 파일을 실행파일을 위�
 C:\google-java-format>mklink update.bat C:\git\github-exe-binary-update\update.bat
 symbolic link created for update.bat <<===>> C:\git\github-exe-binary-update\update.bat
 
+C:\google-java-format>mklink security_scan.bat C:\git\github-exe-binary-update\security_scan.bat
+symbolic link created for security_scan.bat <<===>> C:\git\github-exe-binary-update\security_scan.bat
+
 C:\google-java-format>mklink settings.properties C:\git\github-exe-binary-update\settings\google-java-format.properties
 symbolic link created for settings.properties <<===>> C:\git\github-exe-binary-update\settings\google-java-format.properties
 
@@ -96,18 +105,21 @@ Local  version: none
 Latest version: google-java-format: Version 1.28.0
 Expected file size: 31342592 bytes
 Expected SHA256: 3242e4a2e86c757397d207bb64c86dbc401b3eace7387084cef88843c62dc08e
-★★★ Please Check Version ★★★
+✨✨✨ Please Check Version ✨✨✨
 Would you like to update? (y/n): y
 Downloading the latest version of google-java-format_windows-x86-64.exe.
 Download successful. Verifying file integrity...
 Actual file size: 31342592 bytes
-File size verification passed.
+✅ File size verification passed.
+Running Windows Defender scan on: C:\google-java-format\google-java-format_windows-x86-64.exe_temp.exe
+✅ Security scan completed - no threats detected.
+✅ Security check passed.
 Calculating SHA256 hash... (this may take a moment)
 Actual SHA256: 3242e4a2e86c757397d207bb64c86dbc401b3eace7387084cef88843c62dc08e
-SHA256 verification passed. File integrity confirmed
+✅ SHA256 verification passed. File integrity confirmed
 Replacing the original file...
-File successfully updated and verified
-Task completed.
+🎉 File successfully updated and verified 🎉
+👍 Task completed.
 Press Enter key to continue...
 
 
