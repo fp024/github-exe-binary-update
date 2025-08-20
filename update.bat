@@ -81,20 +81,8 @@ if not exist %EXECUTABLE_NAME%_temp.exe (
   goto fail_end
 )
 
-echo Download successful. Verifying file integrity...
-
-rem Check file size first
-for /f "delims=" %%i in ('powershell -Command "(Get-Item '%EXECUTABLE_NAME%_temp.exe').Length"') do set ACTUAL_SIZE=%%i
-echo Actual file size: !ACTUAL_SIZE! bytes
-
-if "!ACTUAL_SIZE!" neq "%EXPECTED_SIZE%" (
-    echo ERROR: File size mismatch! Expected: %EXPECTED_SIZE%, Actual: !ACTUAL_SIZE!
-    echo Deleting corrupted file...
-    del %EXECUTABLE_NAME%_temp.exe
-    goto fail_end
-)
-
-echo ✅ File size verification passed.
+echo Download successful.
+echo Running virus scan...
 
 rem Run security scan (optional - continues even if Defender unavailable)
 call security_scan.bat "%EXECUTABLE_NAME%_temp.exe"
@@ -112,6 +100,20 @@ if !SCAN_RESULT! equ 0 (
 ) else (
     echo ⚠️ Security scan unavailable - proceeding with caution.
 )
+
+echo Verifying file size and SHA256 hash...
+rem Check file size first
+for /f "delims=" %%i in ('powershell -Command "(Get-Item '%EXECUTABLE_NAME%_temp.exe').Length"') do set ACTUAL_SIZE=%%i
+echo Actual file size: !ACTUAL_SIZE! bytes
+
+if "!ACTUAL_SIZE!" neq "%EXPECTED_SIZE%" (
+    echo ERROR: File size mismatch! Expected: %EXPECTED_SIZE%, Actual: !ACTUAL_SIZE!
+    echo Deleting corrupted file...
+    del %EXECUTABLE_NAME%_temp.exe
+    goto fail_end
+)
+
+echo ✅ File size verification passed.
 
 echo Calculating SHA256 hash... (this may take a moment)
 
@@ -138,7 +140,7 @@ ren %EXECUTABLE_NAME%_temp.exe %EXECUTABLE_NAME%
 echo 🎉 File successfully updated and verified! 🎉
 
 :end
-echo 👍 Task completed. 
+echo 👍 Task completed. 👍
 :fail_end
 echo Press Enter key to continue...
 set /p dummyVar=""

@@ -34,10 +34,10 @@ rem Run Windows Defender scan using command line (suppress verbose output)
 
 rem Check the result
 if errorlevel 2 (
-    echo 💢 CRITICAL: Windows Defender detected potential threats in the file!
+    echo 💢 FATAL: Windows Defender detected potential threats in the file!
     exit /b 2
 ) else if errorlevel 1 (
-    echo ⚠️ WARNING: Windows Defender scan failed or encountered an error.
+    echo ⚠️ WARN: Windows Defender scan failed or encountered an error.
     echo Proceeding without antivirus scan...
     exit /b 0
 ) else (
