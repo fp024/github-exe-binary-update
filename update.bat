@@ -101,36 +101,15 @@ if !SCAN_RESULT! equ 0 (
     echo ⚠️ Security scan unavailable - proceeding with caution.
 )
 
-echo Verifying file size and SHA256 hash...
-rem Check file size first
-for /f "delims=" %%i in ('powershell -Command "(Get-Item '%EXECUTABLE_NAME%_temp.exe').Length"') do set ACTUAL_SIZE=%%i
-echo Actual file size: !ACTUAL_SIZE! bytes
+rem Run file verification (size and hash check)
+call scripts\file_verification.bat "%EXECUTABLE_NAME%_temp.exe" "%EXPECTED_SIZE%" "%EXPECTED_HASH%"
+set VERIFY_RESULT=!errorlevel!
 
-if "!ACTUAL_SIZE!" neq "%EXPECTED_SIZE%" (
-    echo ERROR: File size mismatch! Expected: %EXPECTED_SIZE%, Actual: !ACTUAL_SIZE!
+if !VERIFY_RESULT! neq 0 (
     echo Deleting corrupted file...
     del %EXECUTABLE_NAME%_temp.exe
     goto fail_end
 )
-
-echo ✅ File size verification passed.
-
-echo Calculating SHA256 hash... (this may take a moment)
-
-rem Calculate SHA256 hash
-for /f "delims=" %%i in ('powershell -Command "$hash = Get-FileHash '%EXECUTABLE_NAME%_temp.exe' -Algorithm SHA256; $hash.Hash.ToLower()"') do set ACTUAL_HASH=%%i
-echo Actual SHA256: !ACTUAL_HASH!
-
-if "!ACTUAL_HASH!" neq "%EXPECTED_HASH%" (
-    echo ERROR: SHA256 hash mismatch! 
-    echo Expected: %EXPECTED_HASH%
-    echo Actual:   !ACTUAL_HASH!
-    echo Deleting corrupted file...
-    del %EXECUTABLE_NAME%_temp.exe
-    goto fail_end
-)
-
-echo ✅ SHA256 verification passed. File integrity confirmed!
 echo Replacing the original file...
 
 if exist %EXECUTABLE_NAME% (
