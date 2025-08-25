@@ -84,8 +84,8 @@
 C:\google-java-format>mklink update.bat C:\git\github-exe-binary-update\update.bat
 symbolic link created for update.bat <<===>> C:\git\github-exe-binary-update\update.bat
 
-C:\google-java-format>mklink security_scan.bat C:\git\github-exe-binary-update\security_scan.bat
-symbolic link created for security_scan.bat <<===>> C:\git\github-exe-binary-update\security_scan.bat
+C:\google-java-format>mklink /D scripts C:\git\github-exe-binary-update\scripts
+symbolic link created for scripts <<===>> C:\git\github-exe-binary-update\scripts
 
 C:\google-java-format>mklink settings.properties C:\git\github-exe-binary-update\settings\google-java-format.properties
 symbolic link created for settings.properties <<===>> C:\git\github-exe-binary-update\settings\google-java-format.properties

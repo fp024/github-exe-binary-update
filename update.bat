@@ -85,7 +85,7 @@ echo Download successful.
 echo Running virus scan...
 
 rem Run security scan (optional - continues even if Defender unavailable)
-call security_scan.bat "%EXECUTABLE_NAME%_temp.exe"
+call scripts\security_scan.bat "%EXECUTABLE_NAME%_temp.exe"
 set SCAN_RESULT=!errorlevel!
 
 if !SCAN_RESULT! equ 2 (
