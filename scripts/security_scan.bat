@@ -48,7 +48,7 @@ if !errorlevel! equ 0 (
     echo DEBUG: No threats found in output text
     set THREAT_DETECTED=0
 ) else (
-    findstr /C:"found" scan_output.tmp > nul
+    findstr /R "found [0-9]+ threats" scan_output.tmp > nul
     if !errorlevel! equ 0 (
         echo DEBUG: Threats detected in output text
         set THREAT_DETECTED=1

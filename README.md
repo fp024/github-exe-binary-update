@@ -125,3 +125,36 @@ Press Enter key to continue...
 C:\google-java-format>
 ```
 
+
+
+## [tests/test_security_scan.bat](tests/test_security_scan.bat) - 바이러스 검사 테스트 배치 파일
+
+실제 상황에서 바이러스 검사가 제대로 되는지 확인하기 어려워서, EICAR 문자열을 활용한 바이러스 검사 테스트 배치 파일을 추가했다.
+
+```
+==================== MpCmdRun.exe Output ====================
+Scan starting...
+Scan finished.
+Scanning C:\git\github-exe-binary-update\tests\eicar_test.exe found 1 threats.
+==================== End of MpCmdRun.exe Output ====================
+```
+
+테스트는 잘 동작하였다, MpCmdRun.exe가 ExitCode로 바이러스를 검출했는지 않했는지로 구분할 수 가 없어서...
+
+MpCmdRun.exe가 출력하는 다음 출력 내용으로 구분해야했는데...
+
+* 검출 되지 않을 경우
+
+  ```
+  found no threats
+  ```
+
+* 검출 되었을 경우
+
+  ```
+  found 1 threats
+  ```
+
+  * 숫자부분은 검출 갯수
+
+MpCmdRun.exe의 출력 결과가 윈도우 11 한글판 및 영문판에서 모두 동일하게 영문으로 출력됨을 확인했다.
