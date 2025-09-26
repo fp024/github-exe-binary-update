@@ -29,14 +29,43 @@ if not exist "%DEFENDER_CMD%" (
 
 echo Running Windows Defender scan on: %ABSOLUTE_PATH%
 
-rem Run Windows Defender scan using command line (suppress verbose output)
-"%DEFENDER_CMD%" -Scan -ScanType 3 -File "%ABSOLUTE_PATH%" >nul 2>&1
+rem Run Windows Defender scan and capture output
+echo DEBUG: Executing "%DEFENDER_CMD%" -Scan -ScanType 3 -File "%ABSOLUTE_PATH%"
+"%DEFENDER_CMD%" -Scan -ScanType 3 -File "%ABSOLUTE_PATH%" > scan_output.tmp 2>&1
+set CMD_EXIT_CODE=%errorlevel%
+echo DEBUG: MpCmdRun.exe returned exit code: %CMD_EXIT_CODE%
 
-rem Check the result
-if errorlevel 2 (
+rem Display scan output
+echo.
+echo ==================== MpCmdRun.exe Output ====================
+type scan_output.tmp
+echo ==================== End of MpCmdRun.exe Output ====================
+echo.
+
+rem Check for threats in output text
+findstr /C:"found no threats" scan_output.tmp > nul
+if !errorlevel! equ 0 (
+    echo DEBUG: No threats found in output text
+    set THREAT_DETECTED=0
+) else (
+    findstr /C:"found" scan_output.tmp > nul
+    if !errorlevel! equ 0 (
+        echo DEBUG: Threats detected in output text
+        set THREAT_DETECTED=1
+    ) else (
+        echo DEBUG: Could not determine threat status from output
+        set THREAT_DETECTED=0
+    )
+)
+
+rem Clean up temporary file
+del scan_output.tmp 2>nul
+
+rem Check the result - use text parsing instead of exit code
+if !THREAT_DETECTED! equ 1 (
     echo 💢 FATAL: Windows Defender detected potential threats in the file!
     exit /b 2
-) else if errorlevel 1 (
+) else if !CMD_EXIT_CODE! geq 1 (
     echo ⚠️ WARN: Windows Defender scan failed or encountered an error.
     echo Proceeding without antivirus scan...
     exit /b 0

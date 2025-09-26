@@ -4,3 +4,4 @@ settings.properties
 *.exe
 *.bak
 *.log
+*.tmp
