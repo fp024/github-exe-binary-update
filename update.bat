@@ -31,8 +31,9 @@ if exist %EXECUTABLE_NAME% (
     echo %EXECUTABLE_NAME% not found locally.
 )
 
+:fetch_api
 rem Get the latest version and file info from GitHub in one API call
-powershell -Command "$release = Invoke-RestMethod -Uri '%LATEST_VERSION_URL%'; $asset = $release.assets | Where-Object { $_.name -eq '%EXECUTABLE_NAME%' }; '@LATEST_TAG=' + $release.tag_name; '@EXPECTED_SIZE=' + $asset.size; '@EXPECTED_HASH=' + (($asset.digest -replace 'sha256:', '').ToLower())" > temp_release_info.txt
+powershell -Command "$release = Invoke-RestMethod -Uri '%LATEST_VERSION_URL%'; $asset = $release.assets | Where-Object { $_.name -eq '%EXECUTABLE_NAME%' }; '@LATEST_TAG=' + $release.tag_name; '@EXPECTED_SIZE=' + $asset.size; '@EXPECTED_HASH=' + (($asset.digest -replace 'sha256:', '').ToLower())" > temp_release_info.txt 2>&1
 
 rem Parse the release info from temporary file
 for /f "tokens=1,2 delims==" %%a in (temp_release_info.txt) do (
@@ -43,6 +44,25 @@ for /f "tokens=1,2 delims==" %%a in (temp_release_info.txt) do (
 
 rem Clean up temporary file
 del temp_release_info.txt
+
+rem Check if API call was successful (verify critical data exists)
+if "!LATEST_TAG!"=="" (
+    echo.
+    echo ❌ Failed to fetch version information from GitHub API.
+    echo This may be due to network issues or API rate limiting.
+    :ask_retry
+    set /p retryChoice="Would you like to retry? (y/n): "
+    if /i "!retryChoice!"=="y" (
+        echo Retrying...
+        goto fetch_api
+    ) else if /i "!retryChoice!"=="n" (
+        echo Canceled by user.
+        goto end
+    ) else (
+        echo Please enter y or n.
+        goto ask_retry
+    )
+)
 
 rem Remove 'v' from the latest tag name
 set LATEST_VERSION=%VERSION_PREFIX%%LATEST_TAG:v=%
