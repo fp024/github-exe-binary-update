@@ -46,7 +46,11 @@ rem Clean up temporary file
 del temp_release_info.txt
 
 rem Check if API call was successful (verify critical data exists)
-if "!LATEST_TAG!"=="" (
+if "!LATEST_TAG!"=="" (set API_FAILED=1)
+if "!EXPECTED_SIZE!"=="" (set API_FAILED=1)
+if "!EXPECTED_HASH!"=="" (set API_FAILED=1)
+
+if "!API_FAILED!"=="1" (
     echo.
     echo ❌ Failed to fetch version information from GitHub API.
     echo This may be due to network issues or API rate limiting.
