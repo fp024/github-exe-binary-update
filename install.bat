@@ -8,14 +8,12 @@ call "%SOURCE_DIR%scripts\check_symlink.bat"
 if %errorlevel% neq 0 (
     echo ❌ Cannot create symbolic links on this system.
     echo.
-    echo Possible solutions:
-    echo   1. Run this script as Administrator
-    echo      - Ctrl + Shift + [Right Click on CMD/Terminal] ^> Run as administrator
-    echo   2. Enable Developer Mode on Windows 10/11
-    echo      - Settings ^> Update ^& Security ^> For developers ^> Developer mode
+    echo Attempting to elevate privileges...
     echo.
-    pause
-    exit /b 1
+    
+    :: 관리자 권한으로 재실행
+    call "%SOURCE_DIR%scripts\elevate.bat" "%~f0" %*
+    exit /b %errorlevel%
 )
 
 :: 인자 확인

@@ -32,10 +32,10 @@ install.bat oh-my-posh C:\oh-my-posh
 install.bat yt-dlp C:\yt-dlp
 ```
 
-**요구사항:**
-- Windows에서 심볼릭 링크를 생성하려면 다음 중 하나가 필요합니다:
-  - **관리자 권한으로 실행**: Ctrl + Shift를 누른 채로 CMD 또는 Windows 터미널 실행
-  - **개발자 모드 활성화** (Windows 10/11): 설정 > 업데이트 및 보안 > 개발자용 > 개발자 모드
+**권한 관련 안내:**
+- 심볼릭 링크 생성 권한이 없으면 자동으로 UAC(사용자 계정 컨트롤) 프롬프트가 표시됩니다.
+- 개발자 모드가 활성화된 경우 권한 상승 없이 바로 설치됩니다.
+  - Windows 10/11: 설정 > 업데이트 및 보안 > 개발자용 > 개발자 모드
 
 **설치되는 파일:**
 - `settings\[프로그램명].properties` → `[설치경로]\settings.properties` (심볼릭 링크)
