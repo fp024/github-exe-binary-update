@@ -6,9 +6,41 @@
 >
 > 💡 원래는 여러가지 잡동사니 모아둔 리포지토리의 하위에 만들어놨던 프로젝트인데, 기능을 조금씩 추가하게 되어서, 별도 리포지토리로 분리했다.
 
-`update.bat`, `security_scan.bat`, `[프로그램_이름].properties` 파일을 실행파일을 위치시킬 디렉토리에 심볼릭 링크로 배치 시켜주면 된다.
+## 설치 방법
 
-`[프로그램_이름].properties` 파일의 심볼릭 링크 명은 settings.properties로 만든다.
+### 자동 설치 (권장)
+
+`install.bat`을 사용하여 자동으로 심볼릭 링크를 생성할 수 있습니다.
+
+**1. 설치 가능한 프로그램 확인**
+
+```cmd
+install.bat
+```
+
+**2. 프로그램 설치**
+
+```cmd
+install.bat [프로그램명] [설치경로]
+```
+
+**예시:**
+
+```cmd
+install.bat google-java-format C:\google-java-format
+install.bat oh-my-posh C:\oh-my-posh
+install.bat yt-dlp C:\yt-dlp
+```
+
+**요구사항:**
+- Windows에서 심볼릭 링크를 생성하려면 다음 중 하나가 필요합니다:
+  - **관리자 권한으로 실행**: Ctrl + Shift를 누른 채로 CMD 또는 Windows 터미널 실행
+  - **개발자 모드 활성화** (Windows 10/11): 설정 > 업데이트 및 보안 > 개발자용 > 개발자 모드
+
+**설치되는 파일:**
+- `settings\[프로그램명].properties` → `[설치경로]\settings.properties` (심볼릭 링크)
+- `update.bat` → `[설치경로]\update.bat` (심볼릭 링크)
+- `scripts\` → `[설치경로]\scripts\` (정션 링크)
 
 ## update.bat 기능 명세
 
@@ -70,27 +102,11 @@
 
 
 
-## 예시 (google-java-format)
+## 사용 예시 (google-java-format)
 
-디렉토리 링크라면 정션링크를 사용할 수 있지만, 파일 링크이기 때문에 심볼릭 링크를 써야한다.
-
-💡윈도우에서 심볼릭 링크를 사용하려면 관리자 권한으로 CMD를 실행한 후 만들어야함
-
-**[관리자 권한 명령 프롬프트]**
-
-* Ctrl + Shfit 누른채로 "CMD" 또는 "Windows 터미널" 실행
+설치 후 대상 디렉토리에서 `update.bat`을 실행하면 최신 버전을 확인하고 다운로드합니다.
 
 ```
-C:\google-java-format>mklink update.bat C:\git\github-exe-binary-update\update.bat
-symbolic link created for update.bat <<===>> C:\git\github-exe-binary-update\update.bat
-
-C:\google-java-format>mklink /D scripts C:\git\github-exe-binary-update\scripts
-symbolic link created for scripts <<===>> C:\git\github-exe-binary-update\scripts
-
-C:\google-java-format>mklink settings.properties C:\git\github-exe-binary-update\settings\google-java-format.properties
-symbolic link created for settings.properties <<===>> C:\git\github-exe-binary-update\settings\google-java-format.properties
-
-C:\google-java-format>
 C:\google-java-format>update.bat
 --- Options ---
 LATEST_VERSION_URL=https://api.github.com/repos/google/google-java-format/releases/latest
