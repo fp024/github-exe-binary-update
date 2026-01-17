@@ -3,19 +3,6 @@ setlocal enabledelayedexpansion
 
 set "SOURCE_DIR=%~dp0"
 
-:: 심볼릭 링크 생성 가능 여부 확인
-call "%SOURCE_DIR%scripts\check_symlink.bat"
-if %errorlevel% neq 0 (
-    echo ❌ Cannot create symbolic links on this system.
-    echo.
-    echo Attempting to elevate privileges...
-    echo.
-    
-    :: 관리자 권한으로 재실행
-    call "%SOURCE_DIR%scripts\elevate.bat" "%~f0" %*
-    exit /b %errorlevel%
-)
-
 :: 인자 확인
 if "%~1"=="" (
     echo Usage: install.bat [program-name] [target-directory]
@@ -30,6 +17,19 @@ if "%~1"=="" (
     echo   install.bat google-java-format C:\google-java-format
     pause
     exit /b 1
+)
+
+:: 심볼릭 링크 생성 가능 여부 확인
+call "%SOURCE_DIR%scripts\check_symlink.bat"
+if %errorlevel% neq 0 (
+    echo ❌ Cannot create symbolic links on this system.
+    echo.
+    echo Attempting to elevate privileges...
+    echo.
+    
+    :: 관리자 권한으로 재실행
+    call "%SOURCE_DIR%scripts\elevate.bat" "%~f0" %*
+    exit /b %errorlevel%
 )
 
 if "%~2"=="" (
