@@ -1,5 +1,6 @@
 @echo off
 setlocal enabledelayedexpansion
+call "%~dp0symbols.bat"
 
 rem Parameters: %1 = file path, %2 = expected size, %3 = expected hash
 set "FILE_TO_VERIFY=%~1"
@@ -37,7 +38,7 @@ if "!ACTUAL_SIZE!" neq "%EXPECTED_SIZE%" (
     exit /b 2
 )
 
-echo ✅ File size verification passed.
+echo !SYM_OK! File size verification passed.
 
 echo Calculating SHA256 hash... (this may take a moment)
 
@@ -52,5 +53,5 @@ if "!ACTUAL_HASH!" neq "%EXPECTED_HASH%" (
     exit /b 3
 )
 
-echo ✅ SHA256 verification passed. File integrity confirmed!
+echo !SYM_OK! SHA256 verification passed. File integrity confirmed!
 exit /b 0

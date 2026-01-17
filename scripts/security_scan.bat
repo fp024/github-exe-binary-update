@@ -1,5 +1,6 @@
 @echo off
 setlocal enabledelayedexpansion
+call "%~dp0symbols.bat"
 
 rem Constants
 set "DEFENDER_CMD=C:\Program Files\Windows Defender\MpCmdRun.exe"
@@ -8,12 +9,12 @@ rem Parameters: %1 = file path to scan
 set "FILE_TO_SCAN=%~1"
 
 if "%FILE_TO_SCAN%"=="" (
-    echo ⚠️ WARN: File path not provided for security scan.
+    echo !SYM_WARN! WARN: File path not provided for security scan.
     exit /b 1
 )
 
 if not exist "%FILE_TO_SCAN%" (
-    echo ⚠️ WARN: File to scan does not exist: %FILE_TO_SCAN%
+    echo !SYM_WARN! WARN: File to scan does not exist: %FILE_TO_SCAN%
     exit /b 1
 )
 
@@ -63,13 +64,13 @@ del scan_output.tmp 2>nul
 
 rem Check the result - use text parsing instead of exit code
 if !THREAT_DETECTED! equ 1 (
-    echo 💢 FATAL: Windows Defender detected potential threats in the file!
+    echo !SYM_CRITICAL! FATAL: Windows Defender detected potential threats in the file!
     exit /b 2
 ) else if !CMD_EXIT_CODE! geq 1 (
-    echo ⚠️ WARN: Windows Defender scan failed or encountered an error.
+    echo !SYM_WARN! WARN: Windows Defender scan failed or encountered an error.
     echo Proceeding without antivirus scan...
     exit /b 0
 ) else (
-    echo ✅ Security scan completed - no threats detected.
+    echo !SYM_OK! Security scan completed - no threats detected.
     exit /b 0
 )
