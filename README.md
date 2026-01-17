@@ -108,6 +108,7 @@ install.bat yt-dlp C:\yt-dlp
 
 ```
 C:\google-java-format>update.bat
+
 --- Options ---
 LATEST_VERSION_URL=https://api.github.com/repos/google/google-java-format/releases/latest
 DOWNLOAD_URL=https://github.com/google/google-java-format/releases/latest/download/google-java-format_windows-x86-64.exe
@@ -117,24 +118,36 @@ VERSION_PREFIX=google-java-format: Version
 ---------------
 google-java-format_windows-x86-64.exe not found locally.
 Local  version: none
-Latest version: google-java-format: Version 1.28.0
-Expected file size: 31342592 bytes
-Expected SHA256: 3242e4a2e86c757397d207bb64c86dbc401b3eace7387084cef88843c62dc08e
-✨✨✨ Please Check Version ✨✨✨
+Latest version: google-java-format: Version 1.33.0
+Expected file size: 30773248 bytes
+Expected SHA256: dfd1bdcdffd997d4056e486109a0d472adf27de469486bc128b81f3b55f9ced3
+[*][*][*] Please Check Version [*][*][*]
 Would you like to update? (y/n): y
 Downloading the latest version of google-java-format_windows-x86-64.exe.
-Download successful. Verifying file integrity...
-Actual file size: 31342592 bytes
-✅ File size verification passed.
+Download successful.
+Running virus scan...
 Running Windows Defender scan on: C:\google-java-format\google-java-format_windows-x86-64.exe_temp.exe
-✅ Security scan completed - no threats detected.
-✅ Security check passed.
+DEBUG: Executing "C:\Program Files\Windows Defender\MpCmdRun.exe" -Scan -ScanType 3 -File "C:\google-java-format\google-java-format_windows-x86-64.exe_temp.exe"
+DEBUG: MpCmdRun.exe returned exit code: 0
+
+==================== MpCmdRun.exe Output ====================
+Scan starting...
+Scan finished.
+Scanning C:\google-java-format\google-java-format_windows-x86-64.exe_temp.exe found no threats.
+==================== End of MpCmdRun.exe Output ====================
+
+DEBUG: No threats found in output text
+[OK] Security scan completed - no threats detected.
+[OK] Security check passed.
+Verifying file size and SHA256 hash...
+Actual file size: 30773248 bytes
+[OK] File size verification passed.
 Calculating SHA256 hash... (this may take a moment)
-Actual SHA256: 3242e4a2e86c757397d207bb64c86dbc401b3eace7387084cef88843c62dc08e
-✅ SHA256 verification passed. File integrity confirmed
+Actual SHA256: dfd1bdcdffd997d4056e486109a0d472adf27de469486bc128b81f3b55f9ced3
+[OK] SHA256 verification passed. File integrity confirmed
 Replacing the original file...
-🎉 File successfully updated and verified 🎉
-👍 Task completed.
+[SUCCESS] File successfully updated and verified. [SUCCESS]
+[DONE] Task completed. [DONE]
 Press Enter key to continue...
 
 
