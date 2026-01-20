@@ -54,7 +54,7 @@ if "!EXPECTED_HASH!"=="" (set API_FAILED=1)
 
 if "!API_FAILED!"=="1" (
     echo.
-    echo !SYM_FAIL! Failed to fetch version information from GitHub API.
+    echo %SYM_FAIL% Failed to fetch version information from GitHub API.
     echo This may be due to network issues or API rate limiting.
     :ask_retry
     set /p retryChoice="Would you like to retry? (y/n): "
@@ -81,11 +81,11 @@ echo Expected SHA256: %EXPECTED_HASH%
 
 rem Compare versions and download if different or file doesn't exist
 if "%LOCAL_VERSION%" == "%LATEST_VERSION%" (
-    echo !SYM_INFO! The latest version is already installed.
+    echo %SYM_INFO% The latest version is already installed.
   goto end
 )
 
-echo !SYM_SPARKLE!!SYM_SPARKLE!!SYM_SPARKLE! Please Check Version !SYM_SPARKLE!!SYM_SPARKLE!!SYM_SPARKLE!
+echo %SYM_SPARKLE%%SYM_SPARKLE%%SYM_SPARKLE% Please Check Version %SYM_SPARKLE%%SYM_SPARKLE%%SYM_SPARKLE%
 :ask_continue
 set /p userChoice="Would you like to update? (y/n): "
 if /i "!userChoice!"=="y" (
@@ -115,16 +115,16 @@ call scripts\security_scan.bat "%EXECUTABLE_NAME%_temp.exe"
 set SCAN_RESULT=!errorlevel!
 
 if !SCAN_RESULT! equ 2 (
-    echo !SYM_CRITICAL! CRITICAL: Potential malware detected! Update canceled for security.
+    echo %SYM_CRITICAL% CRITICAL: Potential malware detected! Update canceled for security.
     del %EXECUTABLE_NAME%_temp.exe
     goto fail_end
 )
 
 rem SCAN_RESULT 0 or 1 both allow continuation
 if !SCAN_RESULT! equ 0 (
-    echo !SYM_OK! Security check passed.
+    echo %SYM_OK% Security check passed.
 ) else (
-    echo !SYM_WARN! Security scan unavailable - proceeding with caution.
+    echo %SYM_WARN% Security scan unavailable - proceeding with caution.
 )
 
 rem Run file verification (size and hash check)
@@ -142,10 +142,10 @@ if exist %EXECUTABLE_NAME% (
     del %EXECUTABLE_NAME%
 )
 ren %EXECUTABLE_NAME%_temp.exe %EXECUTABLE_NAME%
-echo !SYM_PARTY! File successfully updated and verified. !SYM_PARTY!
+echo %SYM_PARTY% File successfully updated and verified. %SYM_PARTY%
 
 :end
-echo !SYM_THUMBS! Task completed. !SYM_THUMBS!
+echo %SYM_THUMBS% Task completed. %SYM_THUMBS%
 :fail_end
 echo Press Enter key to continue...
 set /p dummyVar=""

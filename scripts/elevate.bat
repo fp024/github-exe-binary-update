@@ -4,10 +4,13 @@
 
 setlocal enabledelayedexpansion
 
+:: 심볼 로드
+call "%~dp0symbols.bat"
+
 :: 관리자 권한 확인
 net session >nul 2>&1
 if %errorlevel% == 0 (
-    echo Already running with administrator privileges.
+    echo %SYM_INFO% Already running with administrator privileges.
     exit /b 0
 )
 
@@ -22,6 +25,6 @@ set "ARGS=!ARGS! %1"
 goto parse_args
 
 :run_elevated
-echo Requesting administrator privileges...
+echo %SYM_INFO% Requesting administrator privileges...
 powershell -Command "Start-Process '%SCRIPT_PATH%' -ArgumentList '%ARGS%' -Verb RunAs"
 exit /b %errorlevel%
