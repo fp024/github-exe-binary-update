@@ -26,5 +26,5 @@ goto parse_args
 
 :run_elevated
 echo %SYM_INFO% Requesting administrator privileges...
-powershell -Command "Start-Process '%SCRIPT_PATH%' -ArgumentList '%ARGS%' -Verb RunAs"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "Start-Process '%SCRIPT_PATH%' -ArgumentList '%ARGS%' -Verb RunAs"
 exit /b %errorlevel%

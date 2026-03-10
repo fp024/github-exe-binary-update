@@ -35,7 +35,7 @@ if exist %EXECUTABLE_NAME% (
 
 :fetch_api
 rem Get the latest version and file info from GitHub in one API call
-powershell -Command "$release = Invoke-RestMethod -Uri '%LATEST_VERSION_URL%'; $asset = $release.assets | Where-Object { $_.name -eq '%EXECUTABLE_NAME%' }; '@LATEST_TAG=' + $release.tag_name; '@EXPECTED_SIZE=' + $asset.size; '@EXPECTED_HASH=' + (($asset.digest -replace 'sha256:', '').ToLower())" > temp_release_info.txt 2>&1
+powershell -NoProfile -Command "$release = Invoke-RestMethod -Uri '%LATEST_VERSION_URL%'; $asset = $release.assets | Where-Object { $_.name -eq '%EXECUTABLE_NAME%' }; '@LATEST_TAG=' + $release.tag_name; '@EXPECTED_SIZE=' + $asset.size; '@EXPECTED_HASH=' + (($asset.digest -replace 'sha256:', '').ToLower())" > temp_release_info.txt 2>&1
 
 rem Parse the release info from temporary file
 for /f "tokens=1,2 delims==" %%a in (temp_release_info.txt) do (
@@ -98,7 +98,7 @@ if /i "!userChoice!"=="y" (
     goto ask_continue
 )
 echo Downloading the latest version of %EXECUTABLE_NAME%.
-powershell -Command "Invoke-WebRequest -Uri '%DOWNLOAD_URL%' -OutFile '%EXECUTABLE_NAME%_temp.exe'"
+powershell -NoProfile -Command "Invoke-WebRequest -Uri '%DOWNLOAD_URL%' -OutFile '%EXECUTABLE_NAME%_temp.exe'"
 
 rem If the download is successful, verify file integrity
 

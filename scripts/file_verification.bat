@@ -30,7 +30,7 @@ if not exist "%FILE_TO_VERIFY%" (
 echo Verifying file size and SHA256 hash...
 
 rem Check file size first
-for /f "delims=" %%i in ('powershell -Command "(Get-Item '%FILE_TO_VERIFY%').Length"') do set ACTUAL_SIZE=%%i
+for /f "delims=" %%i in ('powershell -NoProfile -Command "(Get-Item '%FILE_TO_VERIFY%').Length"') do set ACTUAL_SIZE=%%i
 echo Actual file size: !ACTUAL_SIZE! bytes
 
 if "!ACTUAL_SIZE!" neq "%EXPECTED_SIZE%" (
@@ -43,7 +43,7 @@ echo %SYM_OK% File size verification passed.
 echo Calculating SHA256 hash... (this may take a moment)
 
 rem Calculate SHA256 hash
-for /f "delims=" %%i in ('powershell -Command "$hash = Get-FileHash '%FILE_TO_VERIFY%' -Algorithm SHA256; $hash.Hash.ToLower()"') do set ACTUAL_HASH=%%i
+for /f "delims=" %%i in ('powershell -NoProfile -Command "$hash = Get-FileHash '%FILE_TO_VERIFY%' -Algorithm SHA256; $hash.Hash.ToLower()"') do set ACTUAL_HASH=%%i
 echo Actual SHA256: !ACTUAL_HASH!
 
 if "!ACTUAL_HASH!" neq "%EXPECTED_HASH%" (
