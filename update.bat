@@ -1,6 +1,18 @@
 @echo off
 setlocal enabledelayedexpansion
 
+set "LOCK_DIR=%TEMP%\github-exe-binary-update.lock"
+if exist "%LOCK_DIR%" (
+    echo A previous update may not have exited cleanly.
+    set /p staleChoice="Remove the existing lock and continue? (y/n): "
+    if /i not "!staleChoice!"=="y" goto lock_failed
+
+    rmdir /s /q "%LOCK_DIR%" 2>nul
+)
+
+2>nul mkdir "%LOCK_DIR%"
+if errorlevel 1 goto lock_failed
+
 call scripts\symbols.bat
 
 rem Check if settings.properties file exists
@@ -145,7 +157,18 @@ ren %EXECUTABLE_NAME%_temp.exe %EXECUTABLE_NAME%
 echo %SYM_PARTY% File successfully updated and verified. %SYM_PARTY%
 
 :end
+rmdir "%LOCK_DIR%" 2>nul
 echo %SYM_THUMBS% Task completed. %SYM_THUMBS%
+goto pause
+
+:lock_failed
+echo Another update process is already running.
+echo Please wait for it to finish and try again.
+goto pause
+
 :fail_end
+rmdir "%LOCK_DIR%" 2>nul
+
+:pause
 echo Press Enter key to continue...
 set /p dummyVar=""
